@@ -1,0 +1,74 @@
+body {
+    font-family: 'Fredoka', sans-serif;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    padding: 48px 0 0;
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+
+.sidebar-sticky {
+    position: relative;
+    top: 0;
+    height: calc(100vh - 48px);
+    padding-top: .5rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.offcanvas-md {
+    display: block;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1045;
+    width: 100%;
+    visibility: visible;
+    backdrop-filter: blur(10px);
+    transform: translateX(0);
+    transition: transform .3s ease-in-out;
+}
+
+.offcanvas-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1rem;
+}
+
+.offcanvas-title {
+    margin-bottom: 0;
+    font-size: 1.25rem;
+}
+
+.nav-link {
+    padding: .5rem 1rem;
+    color: #6c757d;
+}
+
+.nav-link.active {
+    color: #007bff;
+}
+
+.nav-link:hover {
+    color: #0056b3;
+}
+
+.btn-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+}
+
+.table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}

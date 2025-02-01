@@ -1,0 +1,11 @@
+
+# .htaccess (placé à la racine du projet)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /app-sport/
+
+    # Rediriger toutes les requêtes vers public/index.php sauf pour les fichiers et dossiers existants
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ public/index.php [QSA,L]
+</IfModule>
