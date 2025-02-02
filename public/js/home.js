@@ -36,7 +36,43 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Charger les catégories dynamiquement
+    // Charger les produits en vedette
+    const productsContainer = document.querySelector('#products-container .row');
+    console.log(productsContainer)
+
+    fetch('http://localhost/app-sport/src/php/api/products.php')
+        .then(response => response.json())
+        .then(data => {
+            // Limiter à 6 produits
+            const products = data.slice(0, 6);
+
+            // Vider le conteneur avant d'ajouter de nouveaux éléments
+            productsContainer.innerHTML = '';
+
+            products.forEach(product => {
+                const productCard = `
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <img src="${product.image}" class="card-img-top" alt="${product.nom}" style="height: 320px;">
+                            <div class="card-body">
+                                <h5 class="card-title">${product.nom} - ${product.prix} FCFA</h5>
+                                <div class="d-flex align-items-center gap-3">
+                                    <a href="/app-sport/product-detail?product=${product.id}" class="btn btn-primary">Acheter</a>
+                                    <a href="/app-sport/product-detail?product=${product.id}" class="btn btn-secondary">Description</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                productsContainer.innerHTML += productCard;
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            productsContainer.innerHTML = '<p class="text-center">Une erreur est survenue lors du chargement des produits.</p>';
+        });
+
+    // Charger les catégories
     const categoriesContainer = document.getElementById('categories-container');
     const loader = document.getElementById('loader');
 

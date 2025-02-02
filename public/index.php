@@ -17,7 +17,10 @@ switch ($request) {
         require $root . 'admin/login.php';
         break;
     case 'products':
-        require $root . 'pages/product.php';
+        require $root . 'pages/products.php';
+        break;
+    case 'product-detail':
+        require $root . 'pages/product-detail.php';
         break;
     case 'admin/dashboard':
         require $root . 'admin/dashboard.php';
