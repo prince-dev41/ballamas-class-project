@@ -22,7 +22,7 @@ try {
     $productId = $_GET['id'];
 
     // Requête pour récupérer les détails du produit
-    $query = "SELECT id, nom, prix, description, image FROM produits WHERE id = :id";
+    $query = "SELECT * FROM produits WHERE id = :id";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':id', $productId, PDO::PARAM_INT);
     $stmt->execute();
@@ -44,7 +44,7 @@ try {
     }
 
     // Récupérer 3 produits aléatoires (sauf le produit actuel)
-    $queryRandom = "SELECT id, nom, prix, image FROM produits WHERE id != :id ORDER BY RAND() LIMIT 3";
+    $queryRandom = "SELECT * FROM produits WHERE id != :id ORDER BY RAND() LIMIT 3";
     $stmtRandom = $pdo->prepare($queryRandom);
     $stmtRandom->bindParam(':id', $productId, PDO::PARAM_INT);
     $stmtRandom->execute();

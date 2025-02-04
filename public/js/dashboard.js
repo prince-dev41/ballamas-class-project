@@ -1,22 +1,49 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const ctx = document.getElementById('myChart').getContext('2d');
+/* globals Chart:false */
+
+(() => {
+    'use strict'
+  
+    // Graphs
+    const ctx = document.getElementById('myChart')
+    // eslint-disable-next-line no-unused-vars
     const myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-            datasets: [{
-                label: 'My First dataset',
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgb(255, 99, 132)',
-                data: [0, 10, 5, 2, 20, 30, 45],
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
+      type: 'line',
+      data: {
+        labels: [
+          'Sunday',
+          'Monday',
+          'Tuesday',
+          'Wednesday',
+          'Thursday',
+          'Friday',
+          'Saturday'
+        ],
+        datasets: [{
+          data: [
+            15339,
+            21345,
+            18483,
+            24003,
+            23489,
+            24092,
+            12034
+          ],
+          lineTension: 0,
+          backgroundColor: 'transparent',
+          borderColor: '#007bff',
+          borderWidth: 4,
+          pointBackgroundColor: '#007bff'
+        }]
+      },
+      options: {
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            boxPadding: 3
+          }
         }
-    });
-});
+      }
+    })
+  })()

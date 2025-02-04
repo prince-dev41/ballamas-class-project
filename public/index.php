@@ -25,6 +25,24 @@ switch ($request) {
     case 'admin/dashboard':
         require $root . 'admin/dashboard.php';
         break;
+    case 'admin/categories':
+        require $root . 'admin/categories.php';
+        break;
+    case 'admin/customers':
+        require $root  . 'admin/customers.php';
+        break;
+    case 'admin/setting':
+        require $root . 'admin/setting.php';
+        break;
+    case 'admin/products':
+        require $root . 'admin/products.php';
+        break;
+    case 'admin/order':
+        require $root . 'admin/order.php';
+        break;
+    case 'cart' :
+        require $root . 'pages/cart.php';
+        break;
     case 'admin/register':
         require $root . 'admin/register.php';
         break;

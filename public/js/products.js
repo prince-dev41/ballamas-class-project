@@ -15,14 +15,26 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <div class="card-body">
                                     <h5 class="card-title">${product.nom} - ${product.prix} $</h5>
                                     <div class="d-flex align-items-center gap-3">
-                                        <a href="/app-sport/product-detail/${product.id}" class="btn btn-primary">Acheter</a>
                                         <a href="/app-sport/product-detail?product=${product.id}" class="btn btn-secondary">Description</a>
+                                        <button class="btn btn-success add-to-cart" data-id="${product.id}" data-name="${product.nom}" data-price="${product.prix}" data-image="${product.image}">Ajouter au panier</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     `;
                     productsContainer.innerHTML += productCard;
+                });
+
+                // Ajouter les écouteurs d'événements pour les boutons "Ajouter au panier" après l'ajout des produits
+                const addToCartButtons = document.querySelectorAll('.add-to-cart');
+                addToCartButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const productId = button.getAttribute('data-id');
+                        const productName = button.getAttribute('data-name');
+                        const productPrice = button.getAttribute('data-price');
+                        const productImage = button.getAttribute('data-image');
+                        addToCart(productId, productName, productPrice, productImage);
+                    });
                 });
             })
             .catch(error => console.error('Erreur lors du chargement des produits:', error));
@@ -40,10 +52,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     const categoryCard = `
                         <div class="col-md-4 mb-4">
                             <div class="card">
-                             ${category.image ? `<img src="${category.image}" class="card-img-top" alt="${category.nom}">` : ''}
+                                ${category.image ? `<img src="${category.image}" class="card-img-top" alt="${category.nom}">` : ''}
                                 <div class="card-body">
                                     <h5 class="card-title">${category.nom}</h5>
-                                    <a href="/app-sport/products/?categorie${category.id}" class="btn btn-primary">Voir les produits</a>
+                                    <a href="/app-sport/products/?categorie=${category.id}" class="btn btn-primary">Voir les produits</a>
                                 </div>
                             </div>
                         </div>
@@ -57,4 +69,20 @@ document.addEventListener('DOMContentLoaded', function() {
     // Charger les produits et les catégories au chargement de la page
     loadProducts();
     loadCategories();
+
+    // Fonction pour ajouter un produit au panier
+    function addToCart(id, name, price, image) {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const product = { id, name, price, image, quantity: 1 };
+
+        const existingProduct = cart.find(item => item.id === id);
+        if (existingProduct) {
+            existingProduct.quantity += 1;
+        } else {
+            cart.push(product);
+        }
+
+        localStorage.setItem('cart', JSON.stringify(cart));
+        alert('Produit ajouté au panier !');
+    }
 });

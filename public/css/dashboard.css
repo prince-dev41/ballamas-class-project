@@ -1,74 +1,46 @@
-body {
-    font-family: 'Fredoka', sans-serif;
-}
+/* dashboard.css */
 
+/* Sidebar Styling */
 .sidebar {
     position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
-    z-index: 1000;
+    z-index: 100;
     padding: 48px 0 0;
-    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.1);
 }
 
-.sidebar-sticky {
-    position: relative;
-    top: 0;
-    height: calc(100vh - 48px);
-    padding-top: .5rem;
-    overflow-x: hidden;
-    overflow-y: auto;
+.sidebar .nav-link {
+    font-weight: 500;
+    color: #333;
 }
 
-.offcanvas-md {
-    display: block;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 1045;
-    width: 100%;
-    visibility: visible;
-    backdrop-filter: blur(10px);
-    transform: translateX(0);
-    transition: transform .3s ease-in-out;
+.sidebar .nav-link.active {
+    color: #0d6efd;
 }
 
-.offcanvas-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem 1rem;
+.sidebar-heading {
+    font-size: 0.75rem;
+    text-transform: uppercase;
 }
 
-.offcanvas-title {
-    margin-bottom: 0;
-    font-size: 1.25rem;
+/* Main Content Styling */
+main {
+    padding-top: 56px; /* Adjust based on header height */
 }
 
-.nav-link {
-    padding: .5rem 1rem;
-    color: #6c757d;
-}
-
-.nav-link.active {
-    color: #007bff;
-}
-
-.nav-link:hover {
-    color: #0056b3;
-}
-
-.btn-close {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-}
-
+/* Table Styling */
 .table-responsive {
-    display: block;
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    margin-top: 20px;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Chart Styling */
+#myChart {
+    max-width: 100%;
+    height: auto;
 }

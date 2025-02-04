@@ -1,13 +1,11 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "app-vente";
+$host = 'localhost';
+$dbname = 'app-vente';
+$username = 'root';
+$password = '';
 
-// Créer une connexion
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($host, $username, $password, $dbname);
 
-// Vérifier la connexion
 if ($conn->connect_error) {
     die("Connexion échouée: " . $conn->connect_error);
 }

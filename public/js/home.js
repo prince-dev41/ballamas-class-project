@@ -1,5 +1,3 @@
-// home.js
-
 document.addEventListener('DOMContentLoaded', function() {
     // Afficher le toast automatiquement lorsque la page se charge
     var toastElList = [].slice.call(document.querySelectorAll('.toast'));
@@ -38,33 +36,46 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Charger les produits en vedette
     const productsContainer = document.querySelector('#products-container .row');
-    console.log(productsContainer)
+    console.log(productsContainer);
 
     fetch('http://localhost/app-sport/src/php/api/products.php')
         .then(response => response.json())
         .then(data => {
             // Limiter à 6 produits
             const products = data.slice(0, 6);
+            console.log(products);
 
             // Vider le conteneur avant d'ajouter de nouveaux éléments
             productsContainer.innerHTML = '';
 
             products.forEach(product => {
-                const productCard = `
-                    <div class="col-md-4 mb-4">
-                        <div class="card">
-                            <img src="${product.image}" class="card-img-top" alt="${product.nom}" style="height: 320px;">
-                            <div class="card-body">
-                                <h5 class="card-title">${product.nom} - ${product.prix} FCFA</h5>
-                                <div class="d-flex align-items-center gap-3">
-                                    <a href="/app-sport/product-detail?product=${product.id}" class="btn btn-primary">Acheter</a>
-                                    <a href="/app-sport/product-detail?product=${product.id}" class="btn btn-secondary">Description</a>
-                                </div>
+                const productCard = document.createElement('div');
+                productCard.className = 'col-md-4 mb-4';
+                productCard.innerHTML = `
+                    <div class="card">
+                        <img src="${product.image}" class="card-img-top" alt="${product.nom}" style="height: 320px;">
+                        <div class="card-body">
+                            <h5 class="card-title">${product.nom} - ${product.prix}$</h5>
+                            <div class="d-flex align-items-center gap-3">
+                                <a href="/app-sport/product-detail.php?product=${product.id}" class="btn btn-secondary">Description</a>
+                                <button class="btn btn-success add-to-cart" data-id="${product.id}" data-name="${product.nom}" data-price="${product.prix}" data-image="${product.image}">Ajouter au panier</button>
                             </div>
                         </div>
                     </div>
                 `;
-                productsContainer.innerHTML += productCard;
+                productsContainer.appendChild(productCard);
+            });
+
+            // Ajouter les écouteurs d'événements pour les boutons "Ajouter au panier" après l'ajout des produits
+            const addToCartButtons = document.querySelectorAll('.add-to-cart');
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const productId = button.getAttribute('data-id');
+                    const productName = button.getAttribute('data-name');
+                    const productPrice = button.getAttribute('data-price');
+                    const productImage = button.getAttribute('data-image');
+                    addToCart(productId, productName, productPrice, productImage);
+                });
             });
         })
         .catch(error => {
@@ -108,3 +119,18 @@ document.addEventListener('DOMContentLoaded', function() {
             categoriesContainer.innerHTML = '<p class="text-center">Une erreur est survenue lors du chargement des catégories.</p>';
         });
 });
+
+function addToCart(id, name, price, image) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const product = { id, name, price, image, quantity: 1 };
+
+    const existingProduct = cart.find(item => item.id === id);
+    if (existingProduct) {
+        existingProduct.quantity += 1;
+    } else {
+        cart.push(product);
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert('Produit ajouté au panier !');
+}
