@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Custom CSS -->
     <style>
         :root {
@@ -105,7 +104,7 @@
             height: 0.5rem;
             border-radius: 0.25rem;
         }
-        
+
         /* Hamburger Menu */
         .hamburger {
             width: 30px;
@@ -177,9 +176,6 @@
     <!-- Header -->
     <header class="navbar navbar-expand navbar-light sticky-top">
         <div class="d-flex align-items-center">
-            <!-- <button class="navbar-toggler d-md-none me-2" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
-                <span class="navbar-toggler-icon"></span>
-            </button> -->
             <div class="hamburger d-lg-none">
                 <span></span>
                 <span></span>
@@ -245,7 +241,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="categories">
+                            <a class="nav-link" href="categories">
                                 <i class="fas fa-users fa-fw me-2"></i>
                                 Catégories
                             </a>
@@ -263,8 +259,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="setting">
-                                <i class="fas fa-cog fa-fw me-2"></i>
+                            <a class="nav-link" href="logout">
+                                <i class="fas fa-sign-out-alt fa-fw me-2"></i>
                                 Déconnexion
                             </a>
                         </li>
@@ -285,9 +281,11 @@
                                 <i class="fas fa-download fa-fw me-1"></i>Rapport
                             </button>
                         </div>
-                        <button type="button" class="btn btn-sm btn-primary">
-                            <i class="fas fa-plus fa-fw me-1"></i>Nouveau Produit
-                        </button>
+                        <a href="products">
+                            <button type="button" class="btn btn-sm btn-primary">
+                                <i class="fas fa-plus fa-fw me-1"></i>Nouveau Produit
+                            </button>
+                        </a>
                     </div>
                 </div>
 
@@ -299,7 +297,7 @@
                                 <div class="row align-items-center">
                                     <div class="col">
                                         <div class="text-xs font-weight-bold text-uppercase mb-1">Ventes Mensuelles</div>
-                                        <div class="h5 mb-0 font-weight-bold">40,000 €</div>
+                                        <div class="h5 mb-0 font-weight-bold" id="totalSales">40,000 €</div>
                                         <div class="mt-2 text-white-50 small">
                                             <i class="fas fa-arrow-up me-1"></i>3.48% depuis le mois dernier
                                         </div>
@@ -318,7 +316,7 @@
                                 <div class="row align-items-center">
                                     <div class="col">
                                         <div class="text-xs font-weight-bold text-uppercase mb-1">Commandes</div>
-                                        <div class="h5 mb-0 font-weight-bold">215</div>
+                                        <div class="h5 mb-0 font-weight-bold" id="totalOrders">215</div>
                                         <div class="mt-2 text-white-50 small">
                                             <i class="fas fa-arrow-up me-1"></i>12% cette semaine
                                         </div>
@@ -337,7 +335,7 @@
                                 <div class="row align-items-center">
                                     <div class="col">
                                         <div class="text-xs font-weight-bold text-uppercase mb-1">Clients</div>
-                                        <div class="h5 mb-0 font-weight-bold">573</div>
+                                        <div class="h5 mb-0 font-weight-bold" id="totalCustomers">573</div>
                                         <div class="mt-2 text-white-50 small">
                                             <i class="fas fa-user-plus me-1"></i>18 nouveaux aujourd'hui
                                         </div>
@@ -356,7 +354,7 @@
                                 <div class="row align-items-center">
                                     <div class="col">
                                         <div class="text-xs font-weight-bold text-uppercase mb-1">Produits</div>
-                                        <div class="h5 mb-0 font-weight-bold">120</div>
+                                        <div class="h5 mb-0 font-weight-bold" id="totalProducts">120</div>
                                         <div class="mt-2 text-white-50 small">
                                             <i class="fas fa-exclamation-triangle me-1"></i>5 en stock faible
                                         </div>
@@ -412,42 +410,20 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-hover">
+                            <table class="table table-hover" id="recentOrdersTable">
                                 <thead>
                                     <tr>
-                                        <th>Commande ID</th>
+                                        <th>ID</th>
                                         <th>Client</th>
-                                        <th>Produit</th>
+                                        <th>Adresse de Livraison</th>
+                                        <th>Produits</th>
                                         <th>Statut</th>
                                         <th>Montant</th>
                                         <th>Date</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>#2458</td>
-                                        <td>Jean Dupont</td>
-                                        <td>Maillot PSG 2023</td>
-                                        <td><span class="badge bg-success">Livré</span></td>
-                                        <td>89.99 €</td>
-                                        <td>2023-10-15</td>
-                                    </tr>
-                                    <tr>
-                                        <td>#2457</td>
-                                        <td>Marie Martin</td>
-                                        <td>Ballon Nike Strike</td>
-                                        <td><span class="badge bg-warning">En cours</span></td>
-                                        <td>29.99 €</td>
-                                        <td>2023-10-15</td>
-                                    </tr>
-                                    <tr>
-                                        <td>#2456</td>
-                                        <td>Pierre Durand</td>
-                                        <td>Chaussures Adidas X</td>
-                                        <td><span class="badge bg-info">Préparation</span></td>
-                                        <td>129.99 €</td>
-                                        <td>2023-10-14</td>
-                                    </tr>
+                                    <!-- Les commandes seront ajoutées ici dynamiquement -->
                                 </tbody>
                             </table>
                         </div>
@@ -462,71 +438,146 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Sales Chart
-        const salesCtx = document.getElementById('salesChart').getContext('2d');
-        new Chart(salesCtx, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil'],
-                datasets: [{
-                    label: 'Ventes 2023',
-                    data: [30000, 35000, 25000, 45000, 40000, 50000, 40000],
-                    borderColor: '#4e73df',
-                    tension: 0.3,
-                    fill: true,
-                    backgroundColor: 'rgba(78, 115, 223, 0.05)'
-                }]
-            },
-            options: {
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            borderDash: [2],
-                            drawBorder: false
-                        }
+        // Fetch orders from API
+        fetch('http://localhost/app-sport/src/php/api/get_orders.php')
+            .then(response => response.json())
+            .then(data => {
+                const recentOrdersTableBody = document.querySelector('#recentOrdersTable tbody');
+                recentOrdersTableBody.innerHTML = '';
+                data.slice(0, 5).forEach(order => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>#${order.id}</td>
+                        <td>${order.client_nom} ${order.client_prenom}</td>
+                        <td>${order.adresse_livraison}</td>
+                        <td>${order.produits}</td>
+                        <td><span class="badge bg-${order.statut.toLowerCase() === 'livré' ? 'success' : order.statut.toLowerCase() === 'annulé' ? 'danger' : 'warning'}">${order.statut}</span></td>
+                        <td>${order.total} €</td>
+                        <td>${new Date(order.date_commande).toLocaleDateString()}</td>
+                    `;
+                    recentOrdersTableBody.appendChild(row);
+                });
+
+                // Calculate total sales
+                const totalSales = data.reduce((sum, order) => sum + parseFloat(order.total), 0);
+                document.getElementById('totalSales').textContent = `${totalSales.toFixed(2)} €`;
+
+                // Calculate total orders
+                const totalOrders = data.length;
+                document.getElementById('totalOrders').textContent = totalOrders;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+        // Fetch customers from API
+        fetch('http://localhost/app-sport/src/php/api/get_customers.php')
+            .then(response => response.json())
+            .then(data => {
+                const totalCustomers = data.length;
+                document.getElementById('totalCustomers').textContent = totalCustomers;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+        // Fetch products from API
+        fetch('http://localhost/app-sport/src/php/api/products.php')
+            .then(response => response.json())
+            .then(data => {
+                const totalProducts = data.length;
+                document.getElementById('totalProducts').textContent = totalProducts;
+
+                // Calculate low stock products
+                const lowStockProducts = data.filter(product => product.stock < 10).length;
+                document.querySelector('#totalProducts + .small').textContent = `${lowStockProducts} en stock faible`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+        // Fetch sales by category from API
+        fetch('http://localhost/app-sport/src/php/api/get_sales_by_category.php')
+            .then(response => response.json())
+            .then(data => {
+                const labels = data.map(item => item.categorie_nom);
+                const values = data.map(item => item.total_ventes);
+
+                // Pie Chart
+                const pieCtx = document.getElementById('pieChart').getContext('2d');
+                new Chart(pieCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: values,
+                            backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e'],
+                            hoverOffset: 4
+                        }]
                     },
-                    x: {
-                        grid: {
-                            display: false
+                    options: {
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
                         }
                     }
-                }
-            }
-        });
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
 
-        // Pie Chart
-        const pieCtx = document.getElementById('pieChart').getContext('2d');
-        new Chart(pieCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Maillots', 'Chaussures', 'Ballons', 'Accessoires'],
-                datasets: [{
-                    data: [40, 25, 20, 15],
-                    backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e'],
-                    hoverOffset: 4
-                }]
-            },
-            options: {
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
+        // Fetch sales by month from API
+        fetch('http://localhost/app-sport/src/php/api/get_sales_by_month.php')
+            .then(response => response.json())
+            .then(data => {
+                const labels = data.map(item => item.month);
+                const values = data.map(item => item.total_sales);
+
+                // Sales Chart
+                const salesCtx = document.getElementById('salesChart').getContext('2d');
+                new Chart(salesCtx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Ventes 2023',
+                            data: values,
+                            borderColor: '#4e73df',
+                            tension: 0.3,
+                            fill: true,
+                            backgroundColor: 'rgba(78, 115, 223, 0.05)'
+                        }]
+                    },
+                    options: {
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    borderDash: [2],
+                                    drawBorder: false
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        }
                     }
-                }
-            }
-        });
-
-        // // Mobile sidebar toggle
-        // document.querySelector('.navbar-toggler').addEventListener('click', function() {
-        //     document.querySelector('.sidebar').classList.toggle('show');
-        // });
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
 
         // Fade in animation for cards
         document.addEventListener('DOMContentLoaded', function() {
@@ -536,7 +587,6 @@
             });
         });
 
-        
         // Hamburger Menu Toggle
         const hamburger = document.querySelector('.hamburger');
         const sidebar = document.querySelector('.sidebar');
@@ -555,7 +605,6 @@
             sidebar.classList.remove('show');
             overlay.classList.remove('show');
         });
-
     </script>
 </body>
 </html>

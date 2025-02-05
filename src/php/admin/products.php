@@ -188,7 +188,7 @@ if (!isset($_SESSION['user_id'])) {
                 <span></span>
                 <span></span>
             </div>
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/app-sport/home">
                 <i class="fas fa-running me-2"></i>
                 Ballamas
             </a>
@@ -248,7 +248,7 @@ if (!isset($_SESSION['user_id'])) {
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="categories">
+                            <a class="nav-link" href="categories">
                                 <i class="fas fa-users fa-fw me-2"></i>
                                 Catégories
                             </a>
@@ -267,7 +267,7 @@ if (!isset($_SESSION['user_id'])) {
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="logout">
-                                <i class="fas fa-cog fa-fw me-2"></i>
+                                <i class="fas fa-sign-out-alt fa-fw me-2"></i>
                                 Déconnexion
                             </a>
                         </li>
@@ -492,10 +492,9 @@ if (!isset($_SESSION['user_id'])) {
 
             // Handle add product form submission
             document.getElementById('addProductButton').addEventListener('click', async function() {
-                
                 const name = document.getElementById('productName').value;
                 const price = document.getElementById('productPrice').value;
-                productDescription = document.getElementById('productDescription').value;
+                const productDescription = document.getElementById('productDescription').value;
                 const productStock = document.getElementById('productStock').value;
                 const imageInput = document.getElementById('productImage');
                 const image = imageInput.files[0] ? await toBase64(imageInput.files[0]) : null;
@@ -509,8 +508,6 @@ if (!isset($_SESSION['user_id'])) {
                     description: productDescription,
                     categorie_id: productCategory
                 };
-
-                console.log(data)
 
                 fetch('http://localhost/app-sport/src/php/api/add_product.php', {
                     method: 'POST',
@@ -535,15 +532,23 @@ if (!isset($_SESSION['user_id'])) {
 
             // Handle edit product form submission
             document.getElementById('editProductButton').addEventListener('click', async function() {
-                const formData = new FormData(document.getElementById('editProductForm'));
+                const editId = document.getElementById('editProductId').value;
+                const name = document.getElementById('editProductName').value;
+                const price = document.getElementById('editProductPrice').value;
+                const productDescription = document.getElementById('editProductDescription').value;
+                const productStock = document.getElementById('editProductStock').value;
+                const imageInput = document.getElementById('editProductImage');
+                const image = imageInput.files[0] ? await toBase64(imageInput.files[0]) : null;
+                const productCategory = document.getElementById('editProductCategory').value;
+
                 const data = {
-                    id: formData.get('editProductId'),
-                    nom: formData.get('editProductName'),
-                    prix: formData.get('editProductPrice'),
-                    stock: formData.get('editProductStock'),
-                    description: formData.get('editProductDescription'),
-                    image: formData.get('editProductImage') ? await toBase64(formData.get('editProductImage')) : null,
-                    categorie_id: formData.get('editProductCategory')
+                    id: editId,
+                    nom: name,
+                    prix: price,
+                    stock: productStock,
+                    image: image,
+                    description: productDescription,
+                    categorie_id: productCategory
                 };
 
                 fetch('http://localhost/app-sport/src/php/api/update_product.php', {
@@ -557,7 +562,7 @@ if (!isset($_SESSION['user_id'])) {
                 .then(data => {
                     if (data.success) {
                         alert('Produit mis à jour avec succès');
-                        // location.reload();
+                        location.reload();
                     } else {
                         alert('Erreur lors de la mise à jour du produit');
                     }
@@ -572,7 +577,7 @@ if (!isset($_SESSION['user_id'])) {
                 const productId = document.getElementById('deleteProductId').value;
                 const data = { id: productId };
 
-                fetch('http://localhost/app-sport/src/php/api/delete_products.php', {
+                fetch('http://localhost/app-sport/src/php/api/delete_product.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

@@ -240,7 +240,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="categories">
+                            <a class="nav-link" href="categories">
                                 <i class="fas fa-users fa-fw me-2"></i>
                                 Catégories
                             </a>
@@ -259,7 +259,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="logout">
-                                <i class="fas fa-cog fa-fw me-2"></i>
+                                <i class="fas fa-sign-out-alt fa-fw me-2"></i>
                                 Déconnexion
                             </a>
                         </li>
@@ -274,7 +274,6 @@
                         <h1 class="h3 mb-0 text-gray-800">Commandes</h1>
                         <p class="text-muted">Gérez vos commandes ici</p>
                     </div>
-                    </div>
                 </div>
 
                 <!-- Commandes Table -->
@@ -284,12 +283,13 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-hover ml-5">
+                            <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Commande ID</th>
+                                        <th>ID</th>
                                         <th>Client</th>
                                         <th>Produit</th>
+                                        <th>Adresse</th>
                                         <th>Statut</th>
                                         <th>Montant</th>
                                         <th>Date</th>
@@ -414,11 +414,12 @@
                             const row = document.createElement('tr');
                             row.innerHTML = `
                                 <td>#${commande.id}</td>
-                                <td>${commande.nom} ${commande.prenom}</td>
-                                <td>Produit</td>
+                                <td>${commande.client_nom} ${commande.client_prenom}</td>
+                                <td>${commande.produits}</td>
+                                <td>${commande.adresse_livraison}</td>
                                 <td><span class="badge bg-${getBadgeClass(commande.statut)}">${commande.statut}</span></td>
                                 <td>${commande.total} €</td>
-                                <td>${commande.date_commande}</td>
+                                <td>${new Date(commande.date_commande).toLocaleDateString()}</td>
                                 <td>
                                     <button class="btn btn-sm btn-warning me-1" onclick="editStatus(${commande.id}, '${commande.statut}')">
                                         <i class="fas fa-edit"></i>

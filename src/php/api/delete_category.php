@@ -17,7 +17,7 @@ try {
     $id = $data['id'];
 
     // Requête pour supprimer une catégorie
-    $query = "DELETE FROM categorie WHERE id = :id";
+    $query = "DELETE  FROM categorie WHERE id = :id";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':id', $id);
 

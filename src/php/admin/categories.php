@@ -188,7 +188,7 @@ if (!isset($_SESSION['user_id'])) {
                 <span></span>
                 <span></span>
             </div>
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/app-sport/home">
                 <i class="fas fa-running me-2"></i>
                 Ballamas
             </a>
@@ -197,12 +197,11 @@ if (!isset($_SESSION['user_id'])) {
             <div class="dropdown">
                 <a class="btn btn-link text-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                     <i class="fas fa-bell"></i>
-                    <span class="badge bg-danger">3</span>
+                    <span class="badge bg-danger">1</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="#">Nouvelle commande #123</a></li>
-                    <li><a class="dropdown-item" href="#">Stock faible: Maillot XL</a></li>
-                    <li><a class="dropdown-item" href="#">5 nouveaux clients</a></li>
+                    <li><a class="dropdown-item" href="orders">Commande</a></li>
+                    <li><a class="dropdown-item" href="customes">Clients</a></li>
                 </ul>
             </div>
             <div class="dropdown ms-3">
@@ -301,6 +300,7 @@ if (!isset($_SESSION['user_id'])) {
                                     <tr>
                                         <th>ID</th>
                                         <th>Nom</th>
+                                        <th>Image</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -329,6 +329,10 @@ if (!isset($_SESSION['user_id'])) {
                             <label for="categoryName" class="form-label">Nom de la Catégorie</label>
                             <input type="text" class="form-control" id="categoryName" required>
                         </div>
+                        <div class="mb-3">
+                            <label for="categoryImage" class="form-label">Image de la Catégorie</label>
+                            <input type="file" class="form-control" id="categoryImage" accept="image/*">
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -353,6 +357,13 @@ if (!isset($_SESSION['user_id'])) {
                         <div class="mb-3">
                             <label for="editCategoryName" class="form-label">Nom de la Catégorie</label>
                             <input type="text" class="form-control" id="editCategoryName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editCategoryImage" class="form-label">Image de la Catégorie</label>
+                            <input type="file" class="form-control" id="editCategoryImage" accept="image/*">
+                        </div>
+                        <div class="mb-3">
+                            <img id="editCategoryImagePreview" src="" alt="Image Preview" class="img-fluid">
                         </div>
                     </form>
                 </div>
@@ -388,44 +399,101 @@ if (!isset($_SESSION['user_id'])) {
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <script>
-        // Fade in animation for cards
-        document.addEventListener('DOMContentLoaded', function() {
-            const fadeElements = document.querySelectorAll('.fade-in');
-            fadeElements.forEach((element, index) => {
-                element.style.animationDelay = `${index * 0.1}s`;
+    // Définir les fonctions deleteCategory et editCategory en dehors de l'événement DOMContentLoaded
+    function deleteCategory(id) {
+        document.getElementById('deleteCategoryId').value = id;
+        console.log(id);
+    }
+
+    function editCategory(id) {
+        fetch(`http://localhost/app-sport/src/php/api/get_category.php?id=${id}`)
+            .then(response => response.json())
+            .then(category => {
+                document.getElementById('editCategoryId').value = category.id;
+                document.getElementById('editCategoryName').value = category.nom;
+                if (category.image) {
+                    document.getElementById('editCategoryImagePreview').src = category.image;
+                } else {
+                    document.getElementById('editCategoryImagePreview').src = '';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const fadeElements = document.querySelectorAll('.fade-in');
+        fadeElements.forEach((element, index) => {
+            element.style.animationDelay = `${index * 0.1}s`;
+        });
+
+        // Fetch categories from API
+        fetch('http://localhost/app-sport/src/php/api/get_categories.php')
+            .then(response => response.json())
+            .then(data => {
+                const categoryTableBody = document.querySelector('#categoryTable tbody');
+                categoryTableBody.innerHTML = '';
+                data.forEach(category => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>#${category.id}</td>
+                        <td>${category.nom}</td>
+                        <td><img src="${category.image || ''}" alt="Category Image" class="img-fluid" style="max-width: 100px;"></td>
+                        <td>
+                            <button class="btn btn-sm btn-info me-1" data-bs-toggle="modal" data-bs-target="#editCategoryModal" onclick="editCategory(${category.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCategoryModal" onclick="deleteCategory(${category.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    categoryTableBody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
             });
 
-            // Fetch categories from API
-            fetch('http://localhost/app-sport/src/php/api/get_categories.php')
-                .then(response => response.json())
-                .then(data => {
-                    const categoryTableBody = document.querySelector('#categoryTable tbody');
-                    categoryTableBody.innerHTML = '';
-                    data.forEach(category => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>#${category.id}</td>
-                            <td>${category.nom}</td>
-                            <td>
-                                <button class="btn btn-sm btn-info me-1" data-bs-toggle="modal" data-bs-target="#editCategoryModal" onclick="editCategory(${category.id})">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCategoryModal" onclick="deleteCategory(${category.id})">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        `;
-                        categoryTableBody.appendChild(row);
+        // Handle add category form submission
+        document.getElementById('addCategoryButton').addEventListener('click', function() {
+            const name = document.getElementById('categoryName').value;
+            const imageInput = document.getElementById('categoryImage');
+            let image = null;
+
+            if (imageInput.files && imageInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    image = e.target.result.split(',')[1]; // Obtenir la partie base64
+
+                    const data = {
+                        nom: name,
+                        image: image
+                    };
+
+                    fetch('http://localhost/app-sport/src/php/api/add_category.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Catégorie ajoutée avec succès');
+                            location.reload();
+                        } else {
+                            alert('Erreur lors de l\'ajout de la catégorie');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
                     });
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-
-            // Handle add category form submission
-            document.getElementById('addCategoryButton').addEventListener('click', function() {
-                const name = document.getElementById('categoryName').value;
-
+                };
+                reader.readAsDataURL(imageInput.files[0]);
+            } else {
                 const data = {
                     nom: name
                 };
@@ -449,13 +517,49 @@ if (!isset($_SESSION['user_id'])) {
                 .catch(error => {
                     console.error('Error:', error);
                 });
-            });
+            }
+        });
 
-            // Handle edit category form submission
-            document.getElementById('editCategoryButton').addEventListener('click', function() {
-                const id = document.getElementById('editCategoryId').value;
-                const name = document.getElementById('editCategoryName').value;
+        // Handle edit category form submission
+        document.getElementById('editCategoryButton').addEventListener('click', function() {
+            const id = document.getElementById('editCategoryId').value;
+            const name = document.getElementById('editCategoryName').value;
+            const imageInput = document.getElementById('editCategoryImage');
+            let image = null;
 
+            if (imageInput.files && imageInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    image = e.target.result.split(',')[1]; // Obtenir la partie base64
+
+                    const data = {
+                        id: id,
+                        nom: name,
+                        image: image
+                    };
+
+                    fetch('http://localhost/app-sport/src/php/api/update_category.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Catégorie mise à jour avec succès');
+                            location.reload();
+                        } else {
+                            alert('Erreur lors de la mise à jour de la catégorie');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                };
+                reader.readAsDataURL(imageInput.files[0]);
+            } else {
                 const data = {
                     id: id,
                     nom: name
@@ -480,71 +584,55 @@ if (!isset($_SESSION['user_id'])) {
                 .catch(error => {
                     console.error('Error:', error);
                 });
-            });
-
-            // Handle delete category button click
-            document.getElementById('deleteCategoryButton').addEventListener('click', function() {
-                const categoryId = document.getElementById('deleteCategoryId').value;
-                const data = { id: categoryId };
-
-                fetch('http://localhost/app-sport/src/php/api/delete_category.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('Catégorie supprimée avec succès');
-                        location.reload();
-                    } else {
-                        alert('Erreur lors de la suppression de la catégorie');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-            });
-
-            // Function to set edit category form values
-            function editCategory(id) {
-                fetch(`http://localhost/app-sport/src/php/api/get_category.php?id=${id}`)
-                    .then(response => response.json())
-                    .then(category => {
-                        document.getElementById('editCategoryId').value = category.id;
-                        document.getElementById('editCategoryName').value = category.nom;
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
             }
+        });
 
-            // Function to set delete category id
-            function deleteCategory(id) {
-                document.getElementById('deleteCategoryId').value = id;
-            }
+        // Handle delete category button click
+        document.getElementById('deleteCategoryButton').addEventListener('click', function() {
+            const categoryId = document.getElementById('deleteCategoryId').value;
+            const data = { id: categoryId };
 
-            // Hamburger Menu Toggle
-            const hamburger = document.querySelector('.hamburger');
-            const sidebar = document.querySelector('.sidebar');
-            const mainContent = document.querySelector('.main-content');
-            const overlay = document.querySelector('.sidebar-overlay');
-
-            hamburger.addEventListener('click', function() {
-                hamburger.classList.toggle('active');
-                sidebar.classList.toggle('show');
-                overlay.classList.toggle('show');
-            });
-
-            // Fermer le menu au clic sur l'overlay
-            overlay.addEventListener('click', function() {
-                hamburger.classList.remove('active');
-                sidebar.classList.remove('show');
-                overlay.classList.remove('show');
+            fetch('http://localhost/app-sport/src/php/api/delete_category.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Catégorie supprimée avec succès');
+                    location.reload();
+                } else {
+                    alert('Erreur lors de la suppression de la catégorie');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
             });
         });
-    </script>
+
+        // Hamburger Menu Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const sidebar = document.querySelector('.sidebar');
+        const mainContent = document.querySelector('.main-content');
+        const overlay = document.querySelector('.sidebar-overlay');
+
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            sidebar.classList.toggle('show');
+            overlay.classList.toggle('show');
+        });
+
+        // Fermer le menu au clic sur l'overlay
+        overlay.addEventListener('click', function() {
+            hamburger.classList.remove('active');
+            sidebar.classList.remove('show');
+            overlay.classList.remove('show');
+        });
+    });
+</script>
+
 </body>
 </html>

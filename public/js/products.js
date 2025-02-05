@@ -1,7 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Fonction pour charger les produits
-    function loadProducts() {
-        fetch('http://localhost/app-sport/src/php/api/products.php') // Remplacez par votre endpoint API
+    function loadProducts(categoryId = null) {
+        const url = categoryId
+            ? `http://localhost/app-sport/src/php/api/products_by_category.php?id=${categoryId}`
+            : 'http://localhost/app-sport/src/php/api/products.php';
+
+        fetch(url)
             .then(response => response.json())
             .then(data => {
                 const productsContainer = document.getElementById('products-container');
@@ -13,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <div class="card">
                                 <img src="${product.image}" class="card-img-top" alt="${product.nom}" style="height: 320px;">
                                 <div class="card-body">
-                                    <h5 class="card-title">${product.nom} - ${product.prix} $</h5>
+                                    <h5 class="card-title">${product.nom} - ${product.prix} €</h5>
                                     <div class="d-flex align-items-center gap-3">
                                         <a href="/app-sport/product-detail?product=${product.id}" class="btn btn-secondary">Description</a>
                                         <button class="btn btn-success add-to-cart" data-id="${product.id}" data-name="${product.nom}" data-price="${product.prix}" data-image="${product.image}">Ajouter au panier</button>
@@ -42,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Fonction pour charger les catégories
     function loadCategories() {
-        fetch('http://localhost/app-sport/src/php/api/get_categories.php') // Remplacez par votre endpoint API
+        fetch('http://localhost/app-sport/src/php/api/get_categories.php')
             .then(response => response.json())
             .then(data => {
                 const categoriesContainer = document.getElementById('categories-container');
@@ -55,19 +59,32 @@ document.addEventListener('DOMContentLoaded', function() {
                                 ${category.image ? `<img src="${category.image}" class="card-img-top" alt="${category.nom}">` : ''}
                                 <div class="card-body">
                                     <h5 class="card-title">${category.nom}</h5>
-                                    <a href="/app-sport/products/?categorie=${category.id}" class="btn btn-primary">Voir les produits</a>
+                                    <a target=_blank" href="/app-sport/products?category_id=${category.id}" class="btn btn-primary view-category" data-id="${category.id}">Voir les produits</a>
                                 </div>
                             </div>
                         </div>
                     `;
                     categoriesContainer.innerHTML += categoryCard;
                 });
+
+                // Ajouter les écouteurs d'événements pour les boutons "Voir les produits" après l'ajout des catégories
+                const viewCategoryButtons = document.querySelectorAll('.view-category');
+                viewCategoryButtons.forEach(button => {
+                    button.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        const categoryId = button.getAttribute('data-id');
+                        loadProducts(categoryId);
+                    });
+                });
             })
             .catch(error => console.error('Erreur lors du chargement des catégories:', error));
     }
 
     // Charger les produits et les catégories au chargement de la page
-    loadProducts();
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryId = urlParams.get('category_id');
+    console.log(categoryId);
+    loadProducts(categoryId);
     loadCategories();
 
     // Fonction pour ajouter un produit au panier

@@ -15,11 +15,13 @@ try {
     $data = json_decode(file_get_contents('php://input'), true);
 
     $nom = $data['nom'];
+    $image = isset($data['image']) ? base64_decode($data['image']) : null;
 
     // Requête pour ajouter une catégorie
-    $query = "INSERT INTO categorie (nom) VALUES (:nom)";
+    $query = "INSERT INTO categorie (nom, image) VALUES (:nom, :image)";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':nom', $nom);
+    $stmt->bindParam(':image', $image, PDO::PARAM_LOB);
 
     if ($stmt->execute()) {
         echo json_encode(['success' => true, 'message' => 'Catégorie ajoutée avec succès']);

@@ -1,18 +1,40 @@
 <?php
 header('Content-Type: application/json');
-include '../includes/db.php';
+header('Access-Control-Allow-Origin: *');
 
-$sql = "SELECT c.id, c.client_id, cl.nom, cl.prenom, c.total, c.date_commande, c.statut
-        FROM commandes c
-        JOIN clients cl ON c.client_id = cl.id";
-$result = $conn->query($sql);
+include '../includes/db.php'; // Assurez-vous d'inclure votre fichier de connexion à la base de données
 
-$commandes = [];
+$query = "
+    SELECT
+        o.id,
+        o.client_id,
+        c.nom AS client_nom,
+        c.prenom AS client_prenom,
+        c.adresse AS adresse_livraison,
+        o.total,
+        o.date_commande,
+        o.statut,
+        GROUP_CONCAT(CONCAT(p.nom, ' (', pc.quantite, ')') SEPARATOR ', ') AS produits
+    FROM
+        commandes o
+    JOIN
+        clients c ON o.client_id = c.id
+    LEFT JOIN
+        produits_commandes pc ON o.id = pc.commande_id
+    LEFT JOIN
+        produits p ON pc.produit_id = p.id
+    GROUP BY
+        o.id
+    ORDER BY
+        o.date_commande DESC
+";
+
+$result = $conn->query($query);
+
+$orders = [];
 while ($row = $result->fetch_assoc()) {
-    $commandes[] = $row;
+    $orders[] = $row;
 }
 
-echo json_encode($commandes);
-
-$conn->close();
+echo json_encode($orders);
 ?>

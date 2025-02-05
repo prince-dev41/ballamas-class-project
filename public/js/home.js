@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="card">
                         <img src="${product.image}" class="card-img-top" alt="${product.nom}" style="height: 320px;">
                         <div class="card-body">
-                            <h5 class="card-title">${product.nom} - ${product.prix}$</h5>
+                            <h5 class="card-title">${product.nom} - ${product.prix} $</h5>
                             <div class="d-flex align-items-center gap-3">
                                 <a href="/app-sport/product-detail.php?product=${product.id}" class="btn btn-secondary">Description</a>
                                 <button class="btn btn-success add-to-cart" data-id="${product.id}" data-name="${product.nom}" data-price="${product.prix}" data-image="${product.image}">Ajouter au panier</button>
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="card-body">
                             <h5 class="card-title">${category.nom}</h5>
                             <p class="card-text">${category.description}</p>
-                            <a href="/app-sport/produits?category_id=${category.id}" class="btn btn-primary">Voir la Catégorie</a>
+                            <a href="/app-sport/products?category_id=${category.id}" class="btn btn-primary">Voir la Catégorie</a>
                         </div>
                     </div>
                 `;

@@ -16,11 +16,13 @@ try {
 
     $id = $data['id'];
     $nom = $data['nom'];
+    $image = isset($data['image']) ? base64_decode($data['image']) : null;
 
     // Requête pour mettre à jour une catégorie
-    $query = "UPDATE categories SET nom = :nom WHERE id = :id";
+    $query = "UPDATE categorie SET nom = :nom, image = :image WHERE id = :id";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':nom', $nom);
+    $stmt->bindParam(':image', $image, PDO::PARAM_LOB);
     $stmt->bindParam(':id', $id);
 
     if ($stmt->execute()) {
